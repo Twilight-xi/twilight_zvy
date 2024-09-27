@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twilight's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Variables */
+        :root {
+            --bg-color: #121212;
+            --text-color: #fff;
+            --button-border-color: #ffd700;
+            --button-hover-bg: #ffd700;
+            --button-hover-color: #000;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --button-border-color: #333;
+            --button-hover-bg: #333;
+            --button-hover-color: #fff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* Header */
+        header {
+            background-color: #1f1f1f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            font-size: 2.5em;
+            color: #e3e3e3;
+            text-transform: uppercase;
+        }
+
+        .toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .toggle label {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background-color: #444;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle label::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 2.5px;
+            left: 5px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + label {
+            background-color: #4CAF50;
+        }
+
+        input:checked + label::before {
+            transform: translateX(25px);
+        }
+
+        /* Sections */
+        section {
+            padding: 30px;
+            margin: 20px;
+            border: 2px solid var(--button-border-color);
+            border-radius: 15px;
+            background-color: var(--bg-color);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        /* Button Styles */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 1.2em;
+            border: 2px solid var(--button-border-color);
+            border-radius: 10px;
+            background-color: transparent;
+            color: var(--button-border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            flex-basis: 45%;
+            max-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(0);
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+            color: var(--button-hover-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: var(--button-hover-bg);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Icons */
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .icons a img {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s, filter 0.3s;
+        }
+
+        .icons a img:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 5px #ffd700);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #333, #1f1f1f);
+            color: #ffd700;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 50px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        [data-theme="light"] footer {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            button {
+                flex-basis: 100%;
+                max-width: none;
+            }
+
+            .icons a img {
+                width: 40px;
+                height: 40px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>TWILIGHT</div>
+        <div class="toggle">
+            <input type="checkbox" id="theme-toggle">
+            <label for="theme-toggle"></label>
+        </div>
+    </header>
+
+    <section>
+        <h2>About Me</h2>
+        <p>Hello! I'm Twilight. I'm 17. I'm always exploring new creative avenues. This is a space where you can learn more about me. Feel free to connect!</p>
+        <p>Hobbies: Watching anime, reading books, GFX design, etc.</p>
+    </section>
+
+    <section>
+        <h2>SHAPES</h2>
+        <p>Shapes are AI friends who communicate with you on Discord. They're just like regular Discord members.Shapes can participate in discussions, channels, and direct conversations; send photographs, view photos and hear audio messages. They're also quite smart and can help you with your homework as well as teach you how to code! These are the shapes I made. Please feel free to check them out.
+
+How about this?</p>
+        <div class="button-container">
+            <button onclick="window.location.href='https://discord.com/oauth2/authorize?client_id=1237618657345929216'">Gojo Satoru</button>
+            <button onclick="window.location.href='https://discord.com/oauth2/authorize?client_id=1238901209704960104'">Hana Sakurai</button>
+            <button onclick="window.location.href='https://discord.com/oauth2/authorize?client_id=1237637206781202442'">Sasuke</button>
+            <button onclick="window.location.href='https://discord.com/oauth2/authorize?client_id=1246331843016527872'">Denji</button>
+        </div>
+    </section>
+
+    <section class="contact">
+        <h2>Contact Me</h2>
+        <p>Join my Discord Server</p>
+        <div class="icons">
+            <a href="https://discord.gg/jGCMtJ7fEg" target="_blank">
+                <img src="https://cdn.discordapp.com/attachments/1283699495447564292/1289216532685127762/Picsart_24-09-27_19-18-23-382.png?ex=66f803f5&is=66f6b275&hm=b72c73104fa113e10adc5c070b4d779d94a147fc31106a1fdef77feefcb58802&" alt="Discord">
+            </a>
+           
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Twilight.zvy</p>
+    </footer>
+
+    <script>
+        // Theme Toggle Script
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                body.setAttribute('data-theme', 'light');
+            } else {
+                body.removeAttribute('data-theme');
+            }
+        });
+
+        // Reveal sections on // Reveal sections on scroll
+        const sections = document.querySelectorAll('section');
+        const options = {
+            root: null,
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
